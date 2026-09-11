@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { Download, X, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const EASE = [0.22, 1, 0.36, 1];
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 const NAV_ITEMS = [
   { name: "Home", href: "#home" },
