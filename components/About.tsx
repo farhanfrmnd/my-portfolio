@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { GraduationCap, Code2, User } from "lucide-react";
 
-const SMOOTH_EASE = [0.16, 1, 0.3, 1];
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 const cardVariants = {
   hidden: { opacity: 0, y: 16 },
@@ -12,7 +12,7 @@ const cardVariants = {
     transition: {
       duration: 0.8,
       delay: i * 0.08,
-      ease: SMOOTH_EASE,
+      ease: EASE,
     },
   }),
 };
@@ -25,7 +25,7 @@ export default function About() {
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.8, ease: SMOOTH_EASE }}
+        transition={{ duration: 0.8, ease: EASE }}
         className="mb-8"
       >
         <p className="text-xs tracking-[0.3em] uppercase font-bold text-neutral-400">
