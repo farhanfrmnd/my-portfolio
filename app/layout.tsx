@@ -14,7 +14,7 @@ const mono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Muhammad Farhan Farmanda | Portfolio",
-  description: "Software Engineer Portfolio",
+  description: "Portfolio of Muhammad Farhan Farmanda",
 };
 
 export default function RootLayout({
