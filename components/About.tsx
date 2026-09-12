@@ -19,7 +19,7 @@ const cardVariants = {
 
 export default function About() {
   return (
-    <section id="about" className="py-24 px-6 max-w-5xl mx-auto select-none">
+    <section id="about" className="py-24 px-6 max-w-5xl mx-auto">
       {/* Header Section */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}

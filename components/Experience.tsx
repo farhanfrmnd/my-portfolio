@@ -1,5 +1,5 @@
-// components/Experience.tsx
 "use client";
+
 import { useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Briefcase, Users, Calendar, MapPin } from "lucide-react";
@@ -38,7 +38,7 @@ const EXPERIENCES: ExperienceItem[] = [
     id: "exp-2",
     type: "org",
     category: "Organization",
-    role: "Chairman",
+    role: "Chairperson",
     company: "Himpunan Mahasiswa Teknik Komputer USK (HIMATEKKOM USK)",
     location: "Banda Aceh, Indonesia",
     period: "Jan 2025 - Dec 2025",
@@ -94,7 +94,7 @@ export default function Experience() {
   return (
     <section
       id="experience"
-      className="py-20 px-4 sm:px-6 max-w-5xl mx-auto select-none overflow-hidden"
+      className="py-20 px-4 sm:px-6 max-w-5xl mx-auto overflow-hidden"
     >
       {/* Header */}
       <div className="mb-16">
@@ -109,12 +109,12 @@ export default function Experience() {
       {/* Timeline Container */}
       <div ref={containerRef} className="relative">
         {/* Base Track Line */}
-        <div className="absolute left-4 md:left-1/2 top-4 bottom-4 w-0.5 bg-neutral-200 -translate-x-1/2 rounded-full" />
+        <div className="absolute left-4 md:left-1/2 top-4 bottom-4 w-0.5 bg-neutral-200/80 -translate-x-1/2 rounded-full" />
 
-        {/* Active Progress Line */}
+        {/* Active Progress Line dengan Glow Biru */}
         <motion.div
           style={{ scaleY, transformOrigin: "top" }}
-          className="absolute left-4 md:left-1/2 top-4 bottom-4 w-0.5 bg-neutral-900 -translate-x-1/2 rounded-full z-10"
+          className="absolute left-4 md:left-1/2 top-4 bottom-4 w-0.5 bg-gradient-to-b from-blue-600 via-indigo-500 to-blue-400 -translate-x-1/2 rounded-full z-10 shadow-[0_0_12px_rgba(37,99,235,0.8)]"
         />
 
         {/* Experience Cards */}
@@ -125,22 +125,24 @@ export default function Experience() {
 
             return (
               <div key={item.id} className="relative flex items-center">
-                {/* Center Node Icon */}
+                {/* Center Node Icon - Tanpa Glow di Awal, Glow Aktif Saat Scroll */}
                 <motion.div
                   initial={{
                     backgroundColor: "#ffffff",
                     color: "#a3a3a3",
                     borderColor: "#e5e5e5",
+                    boxShadow: "0 0 0px rgba(0,0,0,0)",
                   }}
                   whileInView={{
-                    backgroundColor: "#171717",
+                    backgroundColor: "#2563eb",
                     color: "#ffffff",
-                    borderColor: "#171717",
+                    borderColor: "#2563eb",
                     scale: 1.05,
+                    boxShadow: "0 0 12px rgba(37, 99, 235, 0.5)",
                   }}
                   viewport={{ margin: "-20% 0px -35% 0px" }}
                   transition={{ duration: 0.25 }}
-                  className="absolute left-4 md:left-1/2 -translate-x-1/2 top-6 w-9 h-9 rounded-full border flex items-center justify-center z-20 shadow-2xs"
+                  className="absolute left-4 md:left-1/2 -translate-x-1/2 top-6 w-9 h-9 rounded-full border flex items-center justify-center z-20"
                 >
                   <Icon className="w-4 h-4" />
                 </motion.div>
@@ -170,7 +172,7 @@ export default function Experience() {
                             </span>
                           </div>
 
-                          <h3 className="text-base sm:text-lg font-bold text-neutral-900 tracking-tight mt-1 group-hover:text-black transition-colors">
+                          <h3 className="text-base sm:text-lg font-bold text-neutral-900 tracking-tight mt-1">
                             {item.role}
                           </h3>
 

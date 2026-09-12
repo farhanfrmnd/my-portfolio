@@ -20,7 +20,7 @@ export default function Hero() {
     <section
       ref={ref}
       id="home"
-      className="min-h-screen w-full relative flex flex-col justify-between items-center overflow-hidden pt-28 sm:pt-32 select-none"
+      className="min-h-screen w-full relative flex flex-col justify-between items-center overflow-hidden pt-28 sm:pt-32"
     >
       {/* Container Teks */}
       <div className="w-full text-center z-0 px-4 flex flex-col items-center gap-2.5 sm:gap-3.5 pointer-events-none">
