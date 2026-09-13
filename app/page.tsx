@@ -1,4 +1,3 @@
-// app/page.tsx
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import TextLoop from "@/components/TextLoop";
@@ -6,6 +5,7 @@ import About from "@/components/About";
 import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
 import SocialFloat from "@/components/SocialFloat";
+import Contact from "@/components/Contact";
 
 export default function Home() {
   return (
@@ -17,17 +17,17 @@ export default function Home() {
         <TextLoop
           text="Portfolio"
           shape="line"
-          speed={45} // Naikkan nilai ini jika ingin lebih lambat lagi (misal: 60)
+          speed={45}
           direction="forward"
           separator="✦"
-          fontSize={26} // Disesuaikan agar lebih proporsional & elegan
+          fontSize={26}
           fontWeight={800}
           letterSpacing={3}
           uppercase
-          color="#ffffff" // Warna teks & bintang murni putih
+          color="#ffffff"
           ribbon
           ribbonColor="#000000"
-          ribbonWidth={56} // Ukuran banner lebih tipis dan pas
+          ribbonWidth={56}
           pauseOnHover={false}
         />
       </div>
@@ -36,6 +36,7 @@ export default function Home() {
       <Experience />
       <Projects />
       <SocialFloat />
+      <Contact />
     </main>
   );
 }

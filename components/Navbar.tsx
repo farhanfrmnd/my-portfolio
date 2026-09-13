@@ -10,14 +10,13 @@ const NAV_ITEMS = [
   { name: "About", href: "#about" },
   { name: "Experience", href: "#experience" },
   { name: "Projects", href: "#projects" },
-  { name: "Contacts", href: "#contacts" },
+  { name: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
 
-  // Lock flag agar status tidak melompat-lompat saat smooth scroll antar section
   const isScrollingRef = useRef(false);
 
   useEffect(() => {
@@ -87,7 +86,7 @@ export default function Navbar() {
         transition={{ duration: 1.1, delay: 0, ease: EASE }}
         className="fixed top-6 left-1/2 -translate-x-1/2 z-40 flex items-center justify-between px-6 py-2.5 w-[90%] max-w-5xl rounded-full bg-white/80 backdrop-blur-md border border-neutral-200/80 shadow-xs transform-gpu"
       >
-        {/* Brand / Logo */}
+        {/* Logo */}
         <a
           href="#home"
           onClick={(e) => handleScroll(e, "#home")}
@@ -96,7 +95,7 @@ export default function Navbar() {
           PORTFOLIO.
         </a>
 
-        {/* Menu Navigasi Ultra Minimalis */}
+        {/* Menu Navigasi */}
         <div className="hidden md:flex items-center gap-3 text-xs font-semibold tracking-wider uppercase py-1">
           {NAV_ITEMS.map((item) => {
             const sectionId = item.href.replace("#", "");

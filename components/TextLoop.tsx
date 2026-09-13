@@ -1,4 +1,3 @@
-// components/TextLoop.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -8,7 +7,7 @@ interface TextLoopProps {
   text?: string;
   texts?: string[];
   shape?: string;
-  speed?: number; // Nilai lebih besar = lebih lambat/halus
+  speed?: number;
   direction?: "forward" | "backward";
   separator?: string;
   curviness?: number;
@@ -26,17 +25,17 @@ interface TextLoopProps {
 export default function TextLoop({
   text = "Portfolio",
   texts,
-  speed = 40, // Nilai default diperlambat
+  speed = 40,
   direction = "forward",
   separator = "✦",
-  fontSize = 28, // Ukuran font default dikecilkan
+  fontSize = 28,
   fontWeight = 800,
   letterSpacing = 2,
   uppercase = true,
   color = "#ffffff",
   ribbon = true,
   ribbonColor = "#000000",
-  ribbonWidth = 56, // Tinggi pita/banner dikecilkan
+  ribbonWidth = 56,
   pauseOnHover = false,
 }: TextLoopProps) {
   const [isPaused, setIsPaused] = useState(false);
@@ -44,10 +43,10 @@ export default function TextLoop({
   // Ambil array texts jika ada, atau gunakan text tunggal
   const items = texts && texts.length > 0 ? texts : [text];
 
-  // Duplikasi item agar pengulangan teks tidak pernah terputus di layar lebar
+  // Duplikasi item agar pengulangan teks tidak terputus 
   const repeatedItems = Array(20).fill(items).flat();
 
-  // Durasi diperhitungkan agar animasi berjalan sangat mulus dan santai
+  // Durasi 
   const duration = speed;
   const xAnimation = direction === "forward" ? ["0%", "-50%"] : ["-50%", "0%"];
 
@@ -84,7 +83,6 @@ export default function TextLoop({
             }}
           >
             <span>{item}</span>
-            {/* Bintang separator menggunakan warna putih penuh tanpa opacity */}
             {separator && <span style={{ color }}>{separator}</span>}
           </div>
         ))}

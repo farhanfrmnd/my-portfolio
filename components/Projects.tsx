@@ -1,8 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, X, ExternalLink, Award } from "lucide-react";
+import { motion, AnimatePresence, Variants } from "framer-motion";
+import {
+  ArrowUpRight,
+  X,
+  ExternalLink,
+  Award,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 
 interface ProjectTemplate {
   id: string;
@@ -13,6 +20,7 @@ interface ProjectTemplate {
   image: string;
   tags: string[];
   detailUrl?: string;
+  buttonText?: string;
 }
 
 interface CertificationTemplate {
@@ -34,7 +42,99 @@ const TECH_ICONS: Record<string, string> = {
   HTML: "https://cdn.simpleicons.org/html5",
 };
 
-// Komponen ikon di luar kartu dengan stroke awal dan saat hover menjadi background putih & stroke lebih gelap
+const CERTIFICATIONS: CertificationTemplate[] = [
+  {
+    id: "1",
+    title: "Introduction to Financial Literacy",
+    issuer: "Dicoding Indonesia",
+    issueDate: "2026",
+    credentialId: "JMZVLQOQQXN9",
+    credentialUrl: "https://www.dicoding.com/certificates/JMZVLQOQQXN9",
+  },
+  {
+    id: "2",
+    title: "Belajar Dasar Pemrograman Web",
+    issuer: "Dicoding Indonesia",
+    issueDate: "2026",
+    credentialId: "1RXYDNE63XVM",
+    credentialUrl: "https://www.dicoding.com/certificates/1RXYDNE63XVM",
+  },
+  {
+    id: "3",
+    title: "Internet of Things Device Engineering",
+    issuer: "Badan Nasional Sertifikasi Profesi",
+    issueDate: "2025",
+    credentialId: "62024 2152 7 0002775 2025",
+    credentialUrl:
+      "https://sertifikasi.bnspp.id/sertifikat/62024-2152-7-0002775-2025",
+  },
+  {
+    id: "4",
+    title: "Belajar Dasar AI",
+    issuer: "Dicoding Indonesia",
+    issueDate: "2024",
+    credentialId: "98XW56324PM3",
+    credentialUrl: "https://www.dicoding.com/certificates/98XW56324PM3",
+  },
+  {
+    id: "5",
+    title: "Belajar Dasar Manajemen Proyek",
+    issuer: "Dicoding Indonesia",
+    issueDate: "2024",
+    credentialId: "53XEQEVYRXRN",
+    credentialUrl: "https://www.dicoding.com/certificates/53XEQEVYRXRN",
+  },
+  {
+    id: "6",
+    title: "Belajar Machine Learning untuk Pemula",
+    issuer: "Dicoding Indonesia",
+    issueDate: "2024",
+    credentialId: "1RXY2G2L9XVM",
+    credentialUrl: "https://www.dicoding.com/certificates/1RXY2G2L9XVM",
+  },
+  {
+    id: "7",
+    title: "Belajar Dasar Visualisasi Data",
+    issuer: "Dicoding Indonesia",
+    issueDate: "2024",
+    credentialId: "KEXLY39JMZG2",
+    credentialUrl: "https://www.dicoding.com/certificates/KEXLY39JMZG2",
+  },
+  {
+    id: "8",
+    title: "Memulai Pemrograman dengan Python",
+    issuer: "Dicoding Indonesia",
+    issueDate: "2024",
+    credentialId: "KEXLY8G54ZG2",
+    credentialUrl: "https://www.dicoding.com/certificates/KEXLY8G54ZG2",
+  },
+];
+
+const certVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+  },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.35,
+      delay: i * 0.08,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  }),
+  exit: (i: number) => ({
+    opacity: 0,
+    y: 15,
+    transition: {
+      duration: 0.25,
+      delay: (CERTIFICATIONS.length - 1 - i) * 0.05,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  }),
+};
+
 function ProjectTag({ name }: { name: string }) {
   const iconUrl = TECH_ICONS[name];
   const [hasError, setHasError] = useState(false);
@@ -56,7 +156,6 @@ function ProjectTag({ name }: { name: string }) {
   );
 }
 
-// Komponen interaktif khusus di dalam pop-up (ikon minimalis yang memanjang menampilkan nama saat di-hover)
 function TechIcon({ name }: { name: string }) {
   const iconUrl = TECH_ICONS[name];
   const [hasError, setHasError] = useState(false);
@@ -101,6 +200,7 @@ const PROJECTS: ProjectTemplate[] = [
     tags: ["Unity", "Figma", "Android"],
     detailUrl:
       "https://drive.google.com/drive/folders/15XIEiMhJPIRhzZg7DmcxDxZsKtFVoEYT?usp=sharing",
+    buttonText: "View App",
   },
   {
     id: "3",
@@ -134,6 +234,7 @@ const PROJECTS: ProjectTemplate[] = [
     image: "/projects/project-5.png",
     tags: ["C++", "Firebase", "HTML"],
     detailUrl: "https://youtu.be/J8Qr0RRU5_o?si=ZG6WMpLHDkSgqw_y",
+    buttonText: "View Live Demo",
   },
   {
     id: "6",
@@ -148,36 +249,10 @@ const PROJECTS: ProjectTemplate[] = [
   },
 ];
 
-const CERTIFICATIONS: CertificationTemplate[] = [
-  {
-    id: "1",
-    title: "AWS Certified Solutions Architect",
-    issuer: "Amazon Web Services",
-    issueDate: "2024",
-    credentialId: "AWS-12345678",
-    credentialUrl: "https://aws.amazon.com",
-  },
-  {
-    id: "2",
-    title: "Meta Front-End Developer Professional",
-    issuer: "Meta (Coursera)",
-    issueDate: "2023",
-    credentialId: "META-87654321",
-    credentialUrl: "https://coursera.org",
-  },
-  {
-    id: "3",
-    title: "Sertifikat Pelatihan / Offline",
-    issuer: "Lembaga Pelatihan Nasional",
-    issueDate: "2023",
-    credentialId: "CERT-999000",
-    credentialUrl: "#",
-  },
-];
-
 export default function PortfolioPage() {
   const [selectedProject, setSelectedProject] =
     useState<ProjectTemplate | null>(null);
+  const [showAllCerts, setShowAllCerts] = useState(false);
 
   useEffect(() => {
     if (selectedProject) {
@@ -190,6 +265,10 @@ export default function PortfolioPage() {
       document.body.style.overflow = "unset";
     };
   }, [selectedProject]);
+
+  const visibleCertifications = showAllCerts
+    ? CERTIFICATIONS
+    : CERTIFICATIONS.slice(0, 3);
 
   return (
     <div className="py-20 px-4 sm:px-6 max-w-6xl mx-auto overflow-hidden flex flex-col gap-24">
@@ -212,14 +291,11 @@ export default function PortfolioPage() {
             return (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                custom={idx}
+                variants={certVariants}
+                initial="hidden"
+                whileInView="visible"
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{
-                  duration: 0.4,
-                  delay: idx * 0.1,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
                 className="group relative flex flex-col justify-between p-6 rounded-3xl bg-white border border-neutral-200/80 shadow-2xs hover:border-neutral-300 hover:shadow-md transition-all duration-300"
               >
                 <div className="flex flex-col gap-4">
@@ -309,61 +385,79 @@ export default function PortfolioPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {CERTIFICATIONS.map((cert, idx) => (
-            <motion.div
-              key={cert.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{
-                duration: 0.4,
-                delay: idx * 0.1,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="group relative flex flex-col justify-between p-6 rounded-3xl bg-white border border-neutral-200/80 shadow-2xs hover:border-neutral-300 hover:shadow-md transition-all duration-300"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-2.5 rounded-2xl bg-neutral-900 text-white shadow-2xs">
-                    <Award className="w-5 h-5" />
+          <AnimatePresence mode="popLayout">
+            {visibleCertifications.map((cert, idx) => (
+              <motion.div
+                key={cert.id}
+                layout
+                custom={idx}
+                variants={certVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                exit="exit"
+                className="group relative flex flex-col justify-between p-6 rounded-3xl bg-white border border-neutral-200/80 shadow-2xs hover:border-neutral-300 hover:shadow-md transition-all duration-300"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-2.5 rounded-2xl bg-neutral-900 text-white shadow-2xs">
+                      <Award className="w-5 h-5" />
+                    </div>
+                    <span className="text-xs font-mono font-medium text-neutral-400">
+                      {cert.issueDate}
+                    </span>
                   </div>
-                  <span className="text-xs font-mono font-medium text-neutral-400">
-                    {cert.issueDate}
-                  </span>
+
+                  <h3 className="text-base font-bold text-neutral-900 tracking-tight group-hover:text-neutral-600 transition-colors mb-1">
+                    {cert.title}
+                  </h3>
+                  <p className="text-xs font-mono text-neutral-500 mb-4">
+                    {cert.issuer}
+                  </p>
                 </div>
 
-                <h3 className="text-base font-bold text-neutral-900 tracking-tight group-hover:text-neutral-600 transition-colors mb-1">
-                  {cert.title}
-                </h3>
-                <p className="text-xs font-mono text-neutral-500 mb-4">
-                  {cert.issuer}
-                </p>
-              </div>
+                <div className="pt-4 mt-4 border-t border-neutral-100 flex items-center justify-between min-h-[42px]">
+                  {cert.credentialId ? (
+                    <span className="text-[11px] font-mono text-neutral-400">
+                      ID: {cert.credentialId}
+                    </span>
+                  ) : (
+                    <span />
+                  )}
 
-              <div className="pt-4 mt-4 border-t border-neutral-100 flex items-center justify-between min-h-[42px]">
-                {cert.credentialId ? (
-                  <span className="text-[11px] font-mono text-neutral-400">
-                    ID: {cert.credentialId}
-                  </span>
-                ) : (
-                  <span />
-                )}
-
-                {cert.credentialUrl && cert.credentialUrl !== "#" && (
-                  <a
-                    href={cert.credentialUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-neutral-900 text-white text-xs font-mono font-medium hover:bg-neutral-800 transition-colors shadow-2xs shrink-0 ml-auto"
-                  >
-                    <span>Verify</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                )}
-              </div>
-            </motion.div>
-          ))}
+                  {cert.credentialUrl && cert.credentialUrl !== "#" && (
+                    <a
+                      href={cert.credentialUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-neutral-900 text-white text-xs font-mono font-medium hover:bg-neutral-800 transition-colors shadow-2xs shrink-0 ml-auto"
+                    >
+                      <span>Verify</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
+
+        {/* Button Show More / Show Less */}
+        {CERTIFICATIONS.length > 3 && (
+          <div className="mt-10 flex justify-center">
+            <button
+              onClick={() => setShowAllCerts(!showAllCerts)}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-neutral-900 text-white text-xs font-mono font-semibold hover:bg-neutral-800 active:scale-95 transition-all shadow-md cursor-pointer"
+            >
+              <span>{showAllCerts ? "Show Less" : "Show More"}</span>
+              {showAllCerts ? (
+                <ChevronUp className="w-4 h-4" />
+              ) : (
+                <ChevronDown className="w-4 h-4" />
+              )}
+            </button>
+          </div>
+        )}
       </section>
 
       {/* Modal Detail Project */}
@@ -392,7 +486,6 @@ export default function PortfolioPage() {
               </button>
 
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-start">
-                {/* Left Column: Image & Technologies Used */}
                 <div className="md:col-span-5 w-full flex flex-col gap-5">
                   <div className="relative aspect-4/3 md:aspect-square w-full rounded-2xl bg-neutral-100 overflow-hidden border border-neutral-200/70 shadow-2xs">
                     <img
@@ -416,7 +509,6 @@ export default function PortfolioPage() {
                   </div>
                 </div>
 
-                {/* Right Column: Title, Description, & Button at Bottom Right */}
                 <div className="md:col-span-7 flex flex-col justify-between space-y-5 h-full">
                   <div>
                     <div className="flex items-center gap-3 mb-3 pr-8">
@@ -446,7 +538,7 @@ export default function PortfolioPage() {
                           rel="noopener noreferrer"
                           className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-neutral-900 text-white text-xs font-mono font-semibold hover:bg-neutral-800 transition-all shadow-2xs w-full sm:w-auto"
                         >
-                          <span>View</span>
+                          <span>{selectedProject.buttonText || "View"}</span>
                           <ExternalLink className="w-3.5 h-3.5" />
                         </a>
                       </div>

@@ -189,7 +189,6 @@ export default function Experience() {
                           {item.description}
                         </p>
 
-                        {/* Skills Tag persis seperti pill di Tech Stack section About */}
                         <div className="flex flex-wrap gap-1.5 pt-4 border-t border-neutral-100">
                           {item.skills.map((skill) => (
                             <span

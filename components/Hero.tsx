@@ -47,7 +47,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Foto Utama - Ukuran diperbesar */}
+      {/* Foto Utama */}
       <motion.div
         style={{ y: yScroll, opacity: opacityScroll }}
         initial={{ opacity: 0, y: 24 }}
