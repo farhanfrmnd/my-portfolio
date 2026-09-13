@@ -1,245 +1,462 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, Calendar, ArrowUpRight, Code2 } from "lucide-react";
+import { ArrowUpRight, X, ExternalLink, Award } from "lucide-react";
 
-interface ProjectItem {
+interface ProjectTemplate {
   id: string;
+  number: string;
   title: string;
   category: string;
-  period: string;
   description: string;
-  features: string[];
-  skills: string[];
   image: string;
-  demoUrl?: string;
-  githubUrl?: string;
+  tags: string[];
+  detailUrl?: string;
 }
 
-const PROJECTS: ProjectItem[] = [
-  {
-    id: "proj-1",
-    title: "Airport Security & Monitoring Dashboard",
-    category: "IoT & Systems",
-    period: "2025",
-    description:
-      "A centralized web interface for airport technicians to monitor CCTV telemetry, hardware status, and FIDS flight updates in real time with low-latency alerts.",
-    features: [
-      "Real-time CCTV telemetry & network health monitoring",
-      "FIDS (Flight Information Display System) data sync",
-      "Automated hardware failure alerting & log inspection",
-    ],
-    skills: ["Next.js", "TypeScript", "Tailwind CSS", "WebSocket"],
-    image:
-      "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1200&auto=format&fit=crop",
-    demoUrl: "https://mfarhanfarmanda.my.id",
-    githubUrl: "https://github.com/farhanfarmanda",
-  },
-  {
-    id: "proj-2",
-    title: "HIMATEKKOM Official Portal",
-    category: "Web Platform",
-    period: "2025",
-    description:
-      "Integrated organizational hub supporting student management, event registration for 90+ participants, and internal division workflow automation.",
-    features: [
-      "Student registration & participant tracking system",
-      "Interactive event schedule & tournament portal",
-      "Internal document & budget transparency module",
-    ],
-    skills: ["React", "Next.js", "Framer Motion", "Tailwind CSS"],
-    image:
-      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop",
-    demoUrl: "https://mfarhanfarmanda.my.id",
-    githubUrl: "https://github.com/farhanfarmanda",
-  },
-  {
-    id: "proj-3",
-    title: "Embedded Hardware & CCTV Telemetry",
-    category: "Hardware & Networking",
-    period: "2024",
-    description:
-      "Automated diagnostic tool to inspect network connectivity, camera frame rates, and security scanner responsiveness across distributed airport nodes.",
-    features: [
-      "Automated ping & network packet inspector",
-      "CCTV frame-rate & quality telemetry logger",
-      "Multi-node health status & CLI web interface",
-    ],
-    skills: ["C++", "Linux", "Networking", "Python"],
-    image:
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
-    demoUrl: "https://mfarhanfarmanda.my.id",
-  },
-];
+interface CertificationTemplate {
+  id: string;
+  title: string;
+  issuer: string;
+  issueDate: string;
+  credentialId?: string;
+  credentialUrl?: string;
+}
 
-const CATEGORIES = [
-  "All",
-  "IoT & Systems",
-  "Web Platform",
-  "Hardware & Networking",
-];
+const TECH_ICONS: Record<string, string> = {
+  Unity: "https://cdn.simpleicons.org/unity/000000",
+  "C++": "https://cdn.simpleicons.org/cplusplus",
+  Figma: "https://cdn.simpleicons.org/figma",
+  Android: "https://cdn.simpleicons.org/android",
+  Arduino: "https://cdn.simpleicons.org/arduino",
+  Firebase: "https://cdn.simpleicons.org/firebase",
+  HTML: "https://cdn.simpleicons.org/html5",
+};
 
-function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
+// Komponen ikon di luar kartu dengan stroke awal dan saat hover menjadi background putih & stroke lebih gelap
+function ProjectTag({ name }: { name: string }) {
+  const iconUrl = TECH_ICONS[name];
+  const [hasError, setHasError] = useState(false);
+
+  if (!iconUrl || hasError) return null;
+
   return (
-    <svg
-      viewBox="0 0 24 24"
-      width="14"
-      height="14"
-      stroke="currentColor"
-      strokeWidth="2"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
+    <div
+      title={name}
+      className="p-2 rounded-xl bg-neutral-100/60 border border-neutral-200/80 hover:bg-white hover:border-neutral-400 hover:shadow-2xs transition-all duration-200 flex items-center justify-center cursor-default shrink-0"
     >
-      <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-      <path d="M9 18c-4.51 2-5-2-7-2" />
-    </svg>
+      <img
+        src={iconUrl}
+        alt={name}
+        className="w-3.5 h-3.5 object-contain"
+        onError={() => setHasError(true)}
+      />
+    </div>
   );
 }
 
-export default function Projects() {
-  const [activeCategory, setActiveCategory] = useState("All");
+// Komponen interaktif khusus di dalam pop-up (ikon minimalis yang memanjang menampilkan nama saat di-hover)
+function TechIcon({ name }: { name: string }) {
+  const iconUrl = TECH_ICONS[name];
+  const [hasError, setHasError] = useState(false);
 
-  const filteredProjects = PROJECTS.filter((item) =>
-    activeCategory === "All" ? true : item.category === activeCategory,
-  );
+  if (!iconUrl || hasError) return null;
 
   return (
-    <section
-      id="projects"
-      className="py-20 px-4 sm:px-6 max-w-5xl mx-auto overflow-hidden"
-    >
-      <div className="mb-12 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
-        <div>
+    <div className="group/tech relative flex items-center gap-0 hover:gap-1.5 px-2 py-1.5 rounded-xl bg-neutral-50 border border-neutral-200/80 hover:bg-white hover:border-neutral-300 transition-all duration-300 cursor-default overflow-hidden shrink-0 shadow-2xs">
+      <img
+        src={iconUrl}
+        alt={name}
+        className="w-3.5 h-3.5 object-contain shrink-0"
+        onError={() => setHasError(true)}
+      />
+      <span className="text-[11px] font-mono text-neutral-700 max-w-0 opacity-0 group-hover/tech:max-w-[120px] group-hover/tech:opacity-100 transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden">
+        {name}
+      </span>
+    </div>
+  );
+}
+
+const PROJECTS: ProjectTemplate[] = [
+  {
+    id: "1",
+    number: "01",
+    title: "Automatic Vacuum Cleaning Robots",
+    category: "Robotics & Embedded",
+    description:
+      "An autonomous Arduino-based vacuum cleaning robot engineered to detect obstacles and automatically clear small debris. Integrated with ultrasonic sensors for real-time obstacle avoidance, DC motors for precise maneuvering, and a custom suction mechanism, achieving 90% navigation accuracy in automated indoor cleaning routines.",
+    image: "/projects/project-1.png",
+    tags: ["Arduino", "C++"],
+    detailUrl: "#",
+  },
+  {
+    id: "2",
+    number: "02",
+    title: "ARmory - Markerless AR App",
+    category: "Mobile & AR",
+    description:
+      "An interactive Android application utilizing Markerless Augmented Reality (AR) to visualize 10 traditional Sumatran weapons in 3D. Built with Unity 3D, Vuforia SDK, and C#, it enables 3D object manipulation, historical insights, and interactive quizzes on real-world flat surfaces.",
+    image: "/projects/project-2.png",
+    tags: ["Unity", "Figma", "Android"],
+    detailUrl:
+      "https://drive.google.com/drive/folders/15XIEiMhJPIRhzZg7DmcxDxZsKtFVoEYT?usp=sharing",
+  },
+  {
+    id: "3",
+    number: "03",
+    title: "Smart Irrigation System",
+    category: "Embedded Systems",
+    description:
+      "An autonomous Arduino-based smart irrigation system engineered to optimize agricultural plant watering through real-time soil condition monitoring. The system uses soil moisture sensors to automatically trigger water pumps via relay modules when soil dryness is detected. Integrated with ultrasonic level sensors for reservoir monitoring and an LCD display for live system status, reducing water waste and maximizing irrigation efficiency.",
+    image: "/projects/project-3.png",
+    tags: ["Arduino", "C++"],
+    detailUrl: "#",
+  },
+  {
+    id: "4",
+    number: "04",
+    title: "LPG Gas Mass Monitoring System",
+    category: "Embedded Systems",
+    description:
+      "An autonomous, microcontroller-based LPG mass monitoring system engineered to track the real-time weight of gas cylinders and prevent unexpected outages. Built using an Arduino Uno integrated with a high-precision load cell sensor and HX711 amplifier module, the system continuously calculates cylinder mass and displays live metrics on an LCD screen. Featuring a programmable safety threshold, it triggers dual audio-visual alerts via a buzzer and LED indicators whenever gas levels drop below critical limits, ensuring timely replacements and enhanced household safety.",
+    image: "/projects/project-4.png",
+    tags: ["Arduino", "C++"],
+    detailUrl: "#",
+  },
+  {
+    id: "5",
+    number: "05",
+    title: "BTraffic",
+    category: "Internet of Things (IoT)",
+    description:
+      "An innovative IoT-based smart traffic monitoring system that estimates road congestion using Bluetooth Low Energy (BLE) signals instead of traditional cameras. Powered by an ESP32 microcontroller, the device scans nearby BLE devices, filters signals by RSSI strength, and counts unique detections to approximate real-time vehicle density. The system dynamically classifies traffic conditions such as smooth or congested and syncs live metrics and sequential logs to Firebase Realtime Database for remote tracking via a web dashboard. This project showcases practical expertise in embedded systems, wireless protocols, real-time data streaming, and cloud integration for modern smart city infrastructures.",
+    image: "/projects/project-5.png",
+    tags: ["C++", "Firebase", "HTML"],
+    detailUrl: "https://youtu.be/J8Qr0RRU5_o?si=ZG6WMpLHDkSgqw_y",
+  },
+  {
+    id: "6",
+    number: "06",
+    title: "Mobile Money",
+    category: "UI/UX Design",
+    description:
+      "A mobile banking application that enables users to securely manage their finances through features such as login/logout, balance inquiry, cash withdrawal, deposits, and money transfers. Designed with a clean and intuitive interface, the app provides smooth navigation and efficient transaction flows to deliver a simple and reliable digital banking experience.",
+    image: "/projects/project-6.png",
+    tags: ["Figma"],
+    detailUrl: "#",
+  },
+];
+
+const CERTIFICATIONS: CertificationTemplate[] = [
+  {
+    id: "1",
+    title: "AWS Certified Solutions Architect",
+    issuer: "Amazon Web Services",
+    issueDate: "2024",
+    credentialId: "AWS-12345678",
+    credentialUrl: "https://aws.amazon.com",
+  },
+  {
+    id: "2",
+    title: "Meta Front-End Developer Professional",
+    issuer: "Meta (Coursera)",
+    issueDate: "2023",
+    credentialId: "META-87654321",
+    credentialUrl: "https://coursera.org",
+  },
+  {
+    id: "3",
+    title: "Sertifikat Pelatihan / Offline",
+    issuer: "Lembaga Pelatihan Nasional",
+    issueDate: "2023",
+    credentialId: "CERT-999000",
+    credentialUrl: "#",
+  },
+];
+
+export default function PortfolioPage() {
+  const [selectedProject, setSelectedProject] =
+    useState<ProjectTemplate | null>(null);
+
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [selectedProject]);
+
+  return (
+    <div className="py-20 px-4 sm:px-6 max-w-6xl mx-auto overflow-hidden flex flex-col gap-24">
+      {/* Projects Section */}
+      <section id="projects">
+        <div className="mb-12">
           <h2 className="text-xs font-mono font-semibold tracking-[0.2em] text-neutral-400 uppercase mb-2">
             PROJECTS
           </h2>
           <p className="text-lg sm:text-xl font-bold text-neutral-900 tracking-tight">
-            Featured Engineering Works
+            Featured Portfolio Showcase
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-1.5">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-all duration-200 ${
-                activeCategory === cat
-                  ? "bg-neutral-900 text-white font-medium shadow-2xs"
-                  : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200/70 border border-neutral-200/60"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {PROJECTS.map((item, idx) => {
+            const isEven = idx % 2 === 0;
+            const validTags = item.tags.filter((tag) => TECH_ICONS[tag]);
 
-      <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <AnimatePresence mode="popLayout">
-          {filteredProjects.map((item) => (
-            <motion.div
-              layout
-              key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div className="h-full flex flex-col justify-between p-6 sm:p-8 rounded-3xl bg-white border border-neutral-200/80 shadow-2xs hover:border-neutral-300 hover:shadow-md transition-all duration-300 group">
-                <div>
-                  <div className="relative aspect-video w-full rounded-2xl bg-neutral-100 overflow-hidden border border-neutral-200/70 mb-6">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out"
-                    />
-                    <div className="absolute inset-0 bg-neutral-950/10 group-hover:bg-transparent transition-colors duration-300" />
-                  </div>
+            return (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{
+                  duration: 0.4,
+                  delay: idx * 0.1,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="group relative flex flex-col justify-between p-6 rounded-3xl bg-white border border-neutral-200/80 shadow-2xs hover:border-neutral-300 hover:shadow-md transition-all duration-300"
+              >
+                <div className="flex flex-col gap-4">
+                  {isEven ? (
+                    <>
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="text-2xl sm:text-3xl font-extrabold font-mono text-neutral-300 group-hover:text-neutral-900 transition-colors">
+                            {item.number}
+                          </span>
+                          <span className="text-[10px] font-mono font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-600 border border-neutral-200/70">
+                            {item.category}
+                          </span>
+                        </div>
 
-                  <div className="flex items-center justify-between gap-2 flex-wrap mb-3">
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-neutral-100 text-neutral-700 border border-neutral-200/70">
-                      {item.category}
-                    </span>
-                    <span className="flex items-center gap-1.5 text-neutral-400 text-xs font-mono">
-                      <Calendar className="w-3.5 h-3.5" />
-                      {item.period}
-                    </span>
-                  </div>
+                        <h3 className="text-base font-bold text-neutral-900 tracking-tight group-hover:text-neutral-600 transition-colors">
+                          {item.title}
+                        </h3>
+                      </div>
 
-                  <h3 className="text-base sm:text-lg font-bold text-neutral-900 tracking-tight mt-1 mb-2 group-hover:text-blue-600 transition-colors">
-                    {item.title}
-                  </h3>
+                      <div className="relative aspect-video w-full rounded-2xl bg-neutral-100 overflow-hidden border border-neutral-200/70">
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="relative aspect-video w-full rounded-2xl bg-neutral-100 overflow-hidden border border-neutral-200/70">
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                        />
+                      </div>
 
-                  <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed mb-5">
-                    {item.description}
-                  </p>
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="text-2xl sm:text-3xl font-extrabold font-mono text-neutral-300 group-hover:text-neutral-900 transition-colors">
+                            {item.number}
+                          </span>
+                          <span className="text-[10px] font-mono font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-600 border border-neutral-200/70">
+                            {item.category}
+                          </span>
+                        </div>
 
-                  <div className="mb-6 space-y-2">
-                    <span className="text-[11px] font-mono font-bold text-neutral-400 uppercase tracking-wider flex items-center gap-1">
-                      <Code2 className="w-3 h-3 text-blue-600" /> Key Features
-                    </span>
-                    <ul className="space-y-1.5">
-                      {item.features.map((feature, fIdx) => (
-                        <li
-                          key={fIdx}
-                          className="flex items-start gap-2 text-xs text-neutral-600"
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-1.5 shrink-0" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                        <h3 className="text-base font-bold text-neutral-900 tracking-tight group-hover:text-neutral-600 transition-colors">
+                          {item.title}
+                        </h3>
+                      </div>
+                    </>
+                  )}
                 </div>
 
-                <div className="pt-5 border-t border-neutral-100 space-y-4">
-                  <div className="flex flex-wrap gap-1.5">
-                    {item.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-3 py-1 text-[11px] font-mono font-medium rounded-xl bg-neutral-50 text-neutral-600 border border-neutral-200/80"
-                      >
-                        {skill}
-                      </span>
+                <div className="pt-4 mt-4 border-t border-neutral-100 flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {validTags.map((tag) => (
+                      <ProjectTag key={tag} name={tag} />
                     ))}
                   </div>
 
-                  <div className="flex items-center gap-3 pt-1">
-                    {item.demoUrl && (
-                      <a
-                        href={item.demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-neutral-900 text-white text-xs font-mono font-medium hover:bg-blue-600 transition-colors shadow-2xs"
-                      >
-                        <span>Live Demo</span>
-                        <ArrowUpRight className="w-3.5 h-3.5" />
-                      </a>
-                    )}
-
-                    {item.githubUrl && (
-                      <a
-                        href={item.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-neutral-100 text-neutral-700 border border-neutral-200/80 text-xs font-mono font-medium hover:bg-neutral-200/80 transition-colors"
-                      >
-                        <GithubIcon className="w-3.5 h-3.5" />
-                        <span>Source</span>
-                      </a>
-                    )}
-                  </div>
+                  <button
+                    onClick={() => setSelectedProject(item)}
+                    className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-neutral-900 text-white text-xs font-mono font-medium hover:bg-neutral-800 transition-colors shadow-2xs cursor-pointer shrink-0"
+                  >
+                    <span>Detail</span>
+                    <ArrowUpRight className="w-3 h-3" />
+                  </button>
                 </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Certifications Section */}
+      <section id="certifications">
+        <div className="mb-12">
+          <h2 className="text-xs font-mono font-semibold tracking-[0.2em] text-neutral-400 uppercase mb-2">
+            CERTIFICATIONS
+          </h2>
+          <p className="text-lg sm:text-xl font-bold text-neutral-900 tracking-tight">
+            Licenses & Professional Credentials
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {CERTIFICATIONS.map((cert, idx) => (
+            <motion.div
+              key={cert.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{
+                duration: 0.4,
+                delay: idx * 0.1,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="group relative flex flex-col justify-between p-6 rounded-3xl bg-white border border-neutral-200/80 shadow-2xs hover:border-neutral-300 hover:shadow-md transition-all duration-300"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-2.5 rounded-2xl bg-neutral-900 text-white shadow-2xs">
+                    <Award className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs font-mono font-medium text-neutral-400">
+                    {cert.issueDate}
+                  </span>
+                </div>
+
+                <h3 className="text-base font-bold text-neutral-900 tracking-tight group-hover:text-neutral-600 transition-colors mb-1">
+                  {cert.title}
+                </h3>
+                <p className="text-xs font-mono text-neutral-500 mb-4">
+                  {cert.issuer}
+                </p>
+              </div>
+
+              <div className="pt-4 mt-4 border-t border-neutral-100 flex items-center justify-between min-h-[42px]">
+                {cert.credentialId ? (
+                  <span className="text-[11px] font-mono text-neutral-400">
+                    ID: {cert.credentialId}
+                  </span>
+                ) : (
+                  <span />
+                )}
+
+                {cert.credentialUrl && cert.credentialUrl !== "#" && (
+                  <a
+                    href={cert.credentialUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-neutral-900 text-white text-xs font-mono font-medium hover:bg-neutral-800 transition-colors shadow-2xs shrink-0 ml-auto"
+                  >
+                    <span>Verify</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
               </div>
             </motion.div>
           ))}
-        </AnimatePresence>
-      </motion.div>
-    </section>
+        </div>
+      </section>
+
+      {/* Modal Detail Project */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedProject(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-neutral-950/70 backdrop-blur-md"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 15 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 15 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-3xl p-6 sm:p-8 border border-neutral-200/80 shadow-2xl"
+            >
+              <button
+                onClick={() => setSelectedProject(null)}
+                className="absolute top-5 right-5 p-2 rounded-full bg-neutral-100 hover:bg-neutral-900 hover:text-white text-neutral-500 transition-all cursor-pointer z-20"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-start">
+                {/* Left Column: Image & Technologies Used */}
+                <div className="md:col-span-5 w-full flex flex-col gap-5">
+                  <div className="relative aspect-4/3 md:aspect-square w-full rounded-2xl bg-neutral-100 overflow-hidden border border-neutral-200/70 shadow-2xs">
+                    <img
+                      src={selectedProject.image}
+                      alt={selectedProject.title}
+                      className="w-full h-full object-cover object-center"
+                    />
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] font-mono font-semibold text-neutral-400 uppercase tracking-wider block mb-2">
+                      Technologies Used
+                    </span>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      {selectedProject.tags
+                        .filter((tag) => TECH_ICONS[tag])
+                        .map((tag) => (
+                          <TechIcon key={tag} name={tag} />
+                        ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column: Title, Description, & Button at Bottom Right */}
+                <div className="md:col-span-7 flex flex-col justify-between space-y-5 h-full">
+                  <div>
+                    <div className="flex items-center gap-3 mb-3 pr-8">
+                      <span className="text-3xl font-extrabold font-mono text-neutral-300">
+                        {selectedProject.number}
+                      </span>
+                      <span className="text-[10px] font-mono font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-600 border border-neutral-200/70">
+                        {selectedProject.category}
+                      </span>
+                    </div>
+
+                    <h3 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight mb-3">
+                      {selectedProject.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal">
+                      {selectedProject.description}
+                    </p>
+                  </div>
+
+                  {selectedProject.detailUrl &&
+                    selectedProject.detailUrl !== "#" && (
+                      <div className="pt-4 border-t border-neutral-100 flex justify-end">
+                        <a
+                          href={selectedProject.detailUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-neutral-900 text-white text-xs font-mono font-semibold hover:bg-neutral-800 transition-all shadow-2xs w-full sm:w-auto"
+                        >
+                          <span>View</span>
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

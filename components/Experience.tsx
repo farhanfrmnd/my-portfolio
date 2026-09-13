@@ -111,7 +111,7 @@ export default function Experience() {
         {/* Base Track Line */}
         <div className="absolute left-4 md:left-1/2 top-4 bottom-4 w-0.5 bg-neutral-200/80 -translate-x-1/2 rounded-full" />
 
-        {/* Active Progress Line dengan Glow Biru */}
+        {/* Active Progress Line */}
         <motion.div
           style={{ scaleY, transformOrigin: "top" }}
           className="absolute left-4 md:left-1/2 top-4 bottom-4 w-0.5 bg-gradient-to-b from-blue-600 via-indigo-500 to-blue-400 -translate-x-1/2 rounded-full z-10 shadow-[0_0_12px_rgba(37,99,235,0.8)]"
@@ -125,7 +125,7 @@ export default function Experience() {
 
             return (
               <div key={item.id} className="relative flex items-center">
-                {/* Center Node Icon - Tanpa Glow di Awal, Glow Aktif Saat Scroll */}
+                {/* Center Node Icon */}
                 <motion.div
                   initial={{
                     backgroundColor: "#ffffff",
@@ -178,7 +178,7 @@ export default function Experience() {
 
                           <div className="flex items-center justify-between text-xs font-medium text-neutral-500">
                             <span>{item.company}</span>
-                            <span className="flex items-center gap-1 font-mono text-neutral-400 text-[11px]">
+                            <span className="flex items-center gap-1 text-neutral-400 text-[11px]">
                               <MapPin className="w-3 h-3" />
                               {item.location}
                             </span>
@@ -189,11 +189,12 @@ export default function Experience() {
                           {item.description}
                         </p>
 
+                        {/* Skills Tag persis seperti pill di Tech Stack section About */}
                         <div className="flex flex-wrap gap-1.5 pt-4 border-t border-neutral-100">
                           {item.skills.map((skill) => (
                             <span
                               key={skill}
-                              className="px-3 py-1 text-[11px] font-mono font-medium rounded-xl bg-neutral-50 text-neutral-600 border border-neutral-200/80"
+                              className="px-3.5 py-1 text-xs font-medium rounded-full bg-neutral-50/80 text-neutral-700 border border-neutral-200/80 hover:bg-white hover:border-neutral-400 hover:text-neutral-900 transition-all duration-200 cursor-default"
                             >
                               {skill}
                             </span>
