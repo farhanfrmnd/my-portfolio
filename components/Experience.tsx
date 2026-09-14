@@ -94,10 +94,10 @@ export default function Experience() {
   return (
     <section
       id="experience"
-      className="py-20 px-4 sm:px-6 max-w-5xl mx-auto overflow-hidden"
+      className="py-20 px-4 sm:px-6 max-w-6xl mx-auto overflow-hidden"
     >
       {/* Header */}
-      <div className="mb-16">
+      <div className="mb-12">
         <h2 className="text-xs font-mono font-semibold tracking-[0.2em] text-neutral-400 uppercase mb-2">
           EXPERIENCE
         </h2>
@@ -163,10 +163,10 @@ export default function Experience() {
                       <div className="p-6 sm:p-8 rounded-3xl bg-white border border-neutral-200/80 shadow-2xs hover:border-neutral-300 hover:shadow-md transition-all duration-300 group">
                         <div className="flex flex-col gap-1.5 mb-4">
                           <div className="flex items-center justify-between gap-2 flex-wrap">
-                            <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-neutral-100 text-neutral-700 border border-neutral-200/70">
+                            <span className="text-[10px] font-mono font-semibold uppercase tracking-wider px-3 py-1 rounded-full bg-neutral-100 text-neutral-700 border border-neutral-200/70">
                               {item.category}
                             </span>
-                            <span className="flex items-center gap-1.5 text-neutral-400 text-xs font-mono">
+                            <span className="flex items-center gap-1.5 text-neutral-400 text-xs font-mono font-medium">
                               <Calendar className="w-3.5 h-3.5" />
                               {item.period}
                             </span>
@@ -176,16 +176,16 @@ export default function Experience() {
                             {item.role}
                           </h3>
 
-                          <div className="flex items-center justify-between text-xs font-medium text-neutral-500">
+                          <div className="flex items-center justify-between text-xs font-normal text-neutral-500">
                             <span>{item.company}</span>
-                            <span className="flex items-center gap-1 text-neutral-400 text-[11px]">
+                            <span className="flex items-center gap-1 text-neutral-400 text-[11px] font-mono">
                               <MapPin className="w-3 h-3" />
                               {item.location}
                             </span>
                           </div>
                         </div>
 
-                        <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed mb-6">
+                        <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal mb-6">
                           {item.description}
                         </p>
 
@@ -193,7 +193,7 @@ export default function Experience() {
                           {item.skills.map((skill) => (
                             <span
                               key={skill}
-                              className="px-3.5 py-1 text-xs font-medium rounded-full bg-neutral-50/80 text-neutral-700 border border-neutral-200/80 hover:bg-white hover:border-neutral-400 hover:text-neutral-900 transition-all duration-200 cursor-default"
+                              className="px-3 py-1 text-xs font-mono font-medium rounded-full bg-neutral-50 border border-neutral-200/80 text-neutral-700 hover:border-neutral-400 hover:bg-white transition-all duration-200 cursor-default"
                             >
                               {skill}
                             </span>

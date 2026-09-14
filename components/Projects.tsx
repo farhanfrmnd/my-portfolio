@@ -66,7 +66,7 @@ const CERTIFICATIONS: CertificationTemplate[] = [
     issueDate: "2025",
     credentialId: "62024 2152 7 0002775 2025",
     credentialUrl:
-      "https://sertifikasi.bnspp.id/sertifikat/62024-2152-7-0002775-2025",
+      "SERTIFIKAT BNSP.pdf",
   },
   {
     id: "4",

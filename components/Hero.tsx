@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
@@ -20,7 +21,7 @@ export default function Hero() {
     <section
       ref={ref}
       id="home"
-      className="min-h-screen w-full relative flex flex-col justify-between items-center overflow-hidden pt-28 sm:pt-32"
+      className="min-h-screen w-full max-w-6xl mx-auto relative flex flex-col justify-between items-center overflow-hidden pt-28 sm:pt-32 px-4 sm:px-6"
     >
       {/* Container Teks */}
       <div className="w-full text-center z-0 px-4 flex flex-col items-center gap-2.5 sm:gap-3.5 pointer-events-none">
@@ -29,7 +30,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, delay: 0.1, ease: EASE }}
-            className="text-xs sm:text-sm md:text-base tracking-[0.35em] uppercase font-bold text-neutral-500 antialiased"
+            className="text-xs sm:text-sm font-mono font-semibold tracking-[0.2em] text-neutral-400 uppercase antialiased"
           >
             SOFTWARE ENGINEER
           </motion.p>
@@ -40,7 +41,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, delay: 0.2, ease: EASE }}
-            className="text-2xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-black tracking-tight leading-none text-neutral-900 whitespace-nowrap antialiased"
+            className="text-2xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-tight leading-none text-neutral-900 whitespace-nowrap antialiased"
           >
             MUHAMMAD FARHAN FARMANDA
           </motion.h1>

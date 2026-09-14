@@ -84,7 +84,7 @@ export default function Navbar() {
         initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.1, delay: 0, ease: EASE }}
-        className="fixed top-6 left-1/2 -translate-x-1/2 z-40 flex items-center justify-between px-6 py-2.5 w-[90%] max-w-5xl rounded-full bg-white/80 backdrop-blur-md border border-neutral-200/80 shadow-xs transform-gpu"
+        className="fixed top-6 left-1/2 -translate-x-1/2 z-40 flex items-center justify-between px-6 py-2.5 w-[90%] max-w-6xl rounded-full bg-white/80 backdrop-blur-md border border-neutral-200/80 shadow-xs transform-gpu"
       >
         {/* Logo */}
         <a
@@ -96,7 +96,7 @@ export default function Navbar() {
         </a>
 
         {/* Menu Navigasi */}
-        <div className="hidden md:flex items-center gap-3 text-xs font-semibold tracking-wider uppercase py-1">
+        <div className="hidden md:flex items-center gap-3 text-xs font-mono font-semibold tracking-wider uppercase py-1">
           {NAV_ITEMS.map((item) => {
             const sectionId = item.href.replace("#", "");
             const isActive = activeSection === sectionId;
@@ -121,7 +121,7 @@ export default function Navbar() {
         {/* Tombol Preview CV */}
         <button
           onClick={() => setIsCvOpen(true)}
-          className="group flex items-center gap-2 px-4 py-2 text-xs font-semibold tracking-wider uppercase rounded-full bg-neutral-100 border border-neutral-200/80 text-neutral-800 hover:bg-neutral-900 hover:text-white transition-all duration-300 cursor-pointer"
+          className="group flex items-center gap-2 px-4 py-2 text-xs font-mono font-semibold tracking-wider uppercase rounded-full bg-neutral-100 border border-neutral-200/80 text-neutral-800 hover:bg-neutral-900 hover:text-white transition-all duration-300 cursor-pointer"
         >
           <span>Preview CV</span>
           <Eye className="w-3.5 h-3.5 transition-transform duration-300 group-hover:scale-110" />
@@ -150,21 +150,21 @@ export default function Navbar() {
               className="relative w-full max-w-4xl h-[85vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col z-10 border border-neutral-200 transform-gpu"
             >
               <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 bg-neutral-50/80">
-                <h3 className="text-xs sm:text-sm font-bold tracking-wider uppercase text-neutral-800">
+                <h3 className="text-xs sm:text-sm font-mono font-bold tracking-wider uppercase text-neutral-800">
                   Curriculum Vitae
                 </h3>
                 <div className="flex items-center gap-3">
                   <a
                     href="/CV_Muhammad%20Farhan%20Farmanda.pdf"
                     download="CV_Muhammad Farhan Farmanda.pdf"
-                    className="flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider rounded-full bg-neutral-900 text-white hover:bg-neutral-800 transition-colors shadow-sm"
+                    className="flex items-center gap-2 px-3.5 py-1.5 text-xs font-mono font-semibold uppercase tracking-wider rounded-full bg-neutral-900 text-white hover:bg-neutral-800 transition-colors shadow-sm"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span>Download CV</span>
                   </a>
                   <button
                     onClick={() => setIsCvOpen(false)}
-                    className="p-1.5 rounded-full text-neutral-500 hover:text-black hover:bg-neutral-200/60 transition-colors"
+                    className="p-1.5 rounded-full text-neutral-500 hover:text-white hover:bg-neutral-900 transition-colors cursor-pointer"
                   >
                     <X className="w-5 h-5" />
                   </button>

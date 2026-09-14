@@ -1,4 +1,5 @@
 "use client";
+
 import { motion } from "framer-motion";
 import { GraduationCap, Code2, User } from "lucide-react";
 
@@ -19,17 +20,20 @@ const cardVariants = {
 
 export default function About() {
   return (
-    <section id="about" className="py-24 px-6 max-w-5xl mx-auto">
+    <section id="about" className="py-20 px-4 sm:px-6 max-w-6xl mx-auto">
       {/* Header Section */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.8, ease: EASE }}
-        className="mb-8"
+        className="mb-12"
       >
-        <p className="text-xs tracking-[0.3em] uppercase font-bold text-neutral-400">
-          About
+        <h2 className="text-xs font-mono font-semibold tracking-[0.2em] text-neutral-400 uppercase mb-2">
+          ABOUT
+        </h2>
+        <p className="text-lg sm:text-xl font-bold text-neutral-900 tracking-tight">
+          Personal Profile & Background
         </p>
       </motion.div>
 
@@ -43,7 +47,7 @@ export default function About() {
           viewport={{ once: true, margin: "-60px" }}
           whileHover={{ y: -4, transition: { duration: 0.3, ease: "easeOut" } }}
           variants={cardVariants}
-          className="md:col-span-7 rounded-3xl bg-neutral-950 border border-neutral-800 text-neutral-200 overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300 transform-gpu"
+          className="md:col-span-7 rounded-3xl bg-neutral-950 border border-neutral-800 text-neutral-200 overflow-hidden flex flex-col justify-between shadow-2xs hover:shadow-xl transition-all duration-300 transform-gpu"
         >
           {/* Code Editor Top Bar */}
           <div className="flex items-center justify-between px-5 py-3.5 bg-neutral-900 border-b border-neutral-800/80">
@@ -107,10 +111,10 @@ export default function About() {
           className="md:col-span-5 p-7 sm:p-8 rounded-3xl bg-white border border-neutral-200/80 flex flex-col justify-between gap-6 hover:border-neutral-300 shadow-2xs hover:shadow-md transition-all duration-300 transform-gpu"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-neutral-900 text-white flex items-center justify-center shadow-xs shrink-0">
+            <div className="w-10 h-10 rounded-2xl bg-neutral-900 text-white flex items-center justify-center shadow-2xs shrink-0">
               <GraduationCap className="w-5 h-5" />
             </div>
-            <span className="text-xs font-bold tracking-widest uppercase text-neutral-400">
+            <span className="text-xs font-mono font-semibold tracking-widest uppercase text-neutral-400">
               Education
             </span>
           </div>
@@ -119,10 +123,10 @@ export default function About() {
             <h3 className="text-lg font-bold text-neutral-900 tracking-tight">
               Computer Engineering
             </h3>
-            <p className="text-neutral-500 text-xs mt-1 font-medium">
+            <p className="text-neutral-500 text-xs mt-1 font-normal">
               Bachelor&apos;s Degree - Universitas Syiah Kuala
             </p>
-            <p className="text-neutral-400 text-xs mt-3 font-medium flex items-center gap-1.5">
+            <p className="text-neutral-400 text-xs mt-3 font-mono font-medium flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-neutral-400 inline-block" />
               2022 - 2026
             </p>
@@ -140,10 +144,10 @@ export default function About() {
           className="md:col-span-5 p-7 sm:p-8 rounded-3xl bg-white border border-neutral-200/80 flex flex-col justify-between gap-6 hover:border-neutral-300 shadow-2xs hover:shadow-md transition-all duration-300 transform-gpu"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-neutral-900 text-white flex items-center justify-center shadow-xs shrink-0">
+            <div className="w-10 h-10 rounded-2xl bg-neutral-900 text-white flex items-center justify-center shadow-2xs shrink-0">
               <Code2 className="w-5 h-5" />
             </div>
-            <span className="text-xs font-bold tracking-widest uppercase text-neutral-400">
+            <span className="text-xs font-mono font-semibold tracking-widest uppercase text-neutral-400">
               Tech Stack
             </span>
           </div>
@@ -166,7 +170,7 @@ export default function About() {
               ].map((tech) => (
                 <span
                   key={tech}
-                  className="px-3 py-1 text-xs font-medium rounded-full bg-neutral-50 border border-neutral-200/80 text-neutral-700 hover:border-neutral-400 hover:bg-white transition-all cursor-default"
+                  className="px-3 py-1 text-xs font-mono font-medium rounded-full bg-neutral-50 border border-neutral-200/80 text-neutral-700 hover:border-neutral-400 hover:bg-white transition-all cursor-default"
                 >
                   {tech}
                 </span>
@@ -186,15 +190,15 @@ export default function About() {
           className="md:col-span-7 p-7 sm:p-8 rounded-3xl bg-white border border-neutral-200/80 flex flex-col justify-between gap-6 hover:border-neutral-300 shadow-2xs hover:shadow-md transition-all duration-300 transform-gpu"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-neutral-900 text-white flex items-center justify-center shadow-xs shrink-0">
+            <div className="w-10 h-10 rounded-2xl bg-neutral-900 text-white flex items-center justify-center shadow-2xs shrink-0">
               <User className="w-5 h-5" />
             </div>
-            <span className="text-xs font-bold tracking-widest uppercase text-neutral-400">
+            <span className="text-xs font-mono font-semibold tracking-widest uppercase text-neutral-400">
               About Me
             </span>
           </div>
 
-          <div className="space-y-4 text-neutral-600 leading-relaxed text-sm">
+          <div className="space-y-4 text-neutral-600 leading-relaxed text-xs sm:text-sm font-normal">
             <p>
               Software Engineer with a{" "}
               <strong className="font-semibold text-neutral-900">
