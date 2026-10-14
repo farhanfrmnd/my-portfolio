@@ -21,8 +21,8 @@ const EXPERIENCES: ExperienceItem[] = [
     id: "exp-1",
     type: "work",
     category: "Work Experience",
-    role: "Technician (Internship)",
-    company: "PT. Angkasa Pura Indonesia",
+    role: "Airport Technician (Internship)",
+    company: "PT Angkasa Pura Indonesia Bandara Internasional Sultan Iskandar Muda",
     location: "Aceh, Indonesia",
     period: "Aug 2025 - Sep 2025",
     description:
